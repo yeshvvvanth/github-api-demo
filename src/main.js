@@ -4,6 +4,8 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$apiUrl = 'https://api.github.com/'
+
 new Vue({
   router,
   render: h => h(App)
