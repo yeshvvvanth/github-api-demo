@@ -13,7 +13,12 @@ const routes = [
   },
   {
     path: '/:id',
-    name: 'repo',
+    name: 'repo-list',
+    component: Repo
+  },
+  {
+    path: '/:id/*',
+    name: 'repo-detail',
     component: Repo
   },
   {

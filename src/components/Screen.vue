@@ -1,5 +1,5 @@
 <template>
-    <div id="screen" v-show="this.showScreen" class="flex-column justify-center">
+    <div id="obscreen" v-show="this.showScreen" class="flex-column justify-center">
         <div v-if="isError">
             <h1>
                 error {{this.error}}
@@ -17,25 +17,27 @@
 export default {
     props:{
         user:{},
-        fresh:{},
+        loading:{},
         error:{}
     },
+    data(){
+        return {
+            testData:'haha'
+        }
+    },
     computed:{
-        isLoading(){
-            return this.fresh;
-        },
         isError(){
             return this.error;
         },
         showScreen(){
-            return this.isLoading || this.isError;
+            return this.loading || this.isError;
         },
     }
 }
 </script>
 
 <style>
-#screen{
+#obscreen{
     position: absolute;
     min-width: 100vw;
     min-height: 100vh;

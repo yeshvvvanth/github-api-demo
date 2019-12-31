@@ -35,7 +35,14 @@ html,body,div {
   padding: 0;
   margin: 0;
 }
-
+p{
+  font-size: 14px;
+  color: #6a737d;
+}
+small{
+  color: rgb(92, 106, 121);
+  font-size: 12px;
+}
 .red{
   background-color: red;
 }
@@ -68,7 +75,9 @@ input {
   flex-direction: column;
 }
 
-
+.flex1{
+  flex:1;
+}
 .align-center{
   align-items: center;
 }
@@ -80,6 +89,10 @@ input {
 }
 .justify-space-between{
   justify-content: space-between;
+}
+
+.align-start{
+  align-items: flex-start;
 }
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='file-viewer'>
       
 
   </div>

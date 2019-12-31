@@ -45,7 +45,7 @@ export default {
     methods:{
         goToRepo: function(){
             this.$router.push({
-                name:'repo',
+                name:'repo-list',
                 params:{id:this.repoName}
             })
         }

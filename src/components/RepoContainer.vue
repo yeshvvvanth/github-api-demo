@@ -11,20 +11,20 @@
         <div id="user-bar" class="flex-column">
 
             <div class="flex-row justify-space-between align-center">
-                    <h2>
-                        {{this.username}}
-                    </h2>
+                    <div>
+                        <router-link :to="'/'+username">
+                            {{this.username}}
+                        </router-link>
+                    </div>
                     <img :src="user.avatar_url" :alt="username" width="32" height="32">
             </div>
         </div>
         <div id="app-area">
 
-         
-
+            <slot/>
 
         </div>
 
-        <slot/>
     </div>
     <div v-else class="flex-column justify-center full-height">
         <h1>
