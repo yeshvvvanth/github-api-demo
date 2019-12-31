@@ -5,11 +5,19 @@
     
     <UserInfo :user="this.user" :username="username">
 
-        <component :is="ActiveBrowser" 
-            :repos="repos" 
-            :repository="repository"
-            :file="file" 
+        <FileViewer 
+            v-if="file"
+            :file="file"
         />
+        <FileBrowser 
+            v-else-if="repository"
+            :repository="repository"
+        />
+        <RepoBrowser 
+            v-else
+            :repos="repos"
+        />
+
     </UserInfo>
     
 
@@ -42,25 +50,25 @@ export default {
         let userUrl = this.$apiUrl+'users/'+this.$route.params.id;
         let reposUrl = userUrl+'/repos'; 
 
-        fetch(userUrl).then(res=>res.json()).then(
-            data => {
-                if(!data.message){
-                    this.user = data;
+        this.$axios.get(userUrl).then(
+            res => {
+                if(!res.message){
+                    this.user = res.data;
                 }else{
                     this.fresh =false;
                 }
             }
         ).then(
             () => 
-            fetch(reposUrl).then(res=>res.json()).then(
-                data => {
+            this.$axios.get(reposUrl).then(
+                res => {
                     this.fresh =false;
-                    this.repos = data;
+                    this.repos = res.data;
                 }
             )
         ).catch(
             err => {
-                this.error = err;
+                this.error = err.status;
                 this.fresh = false;
                 this.user = null;
             }
