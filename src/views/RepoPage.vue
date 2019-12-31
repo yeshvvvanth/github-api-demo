@@ -6,20 +6,20 @@
         id="loading-bar"
     />
     
-    <RepoContainer :user="this.user" :username="username">
+    <RepoContainer :user="this.user" :repository="repository">
 
         <RepoBrowser 
             v-if="isUserPage"
             :user="user"
             :repos="repos"
         />
-        <FileBrowser 
-            v-else-if="directory"
-            :directory="directory"
-        />
         <FileViewer 
             v-else-if="file"
             :file="file"
+        />
+        <FileBrowser 
+            v-else-if="directory"
+            :directory="directory"
         />
 
     </RepoContainer>
@@ -44,6 +44,7 @@ export default {
             user:null,
             repos:null,
             directory:null,
+            repository:'',
             file:null,
             loading:true,
             error:null,
@@ -86,11 +87,12 @@ export default {
    
             if(!this.isUserPage){
                 this.reload = true;
-                //this.loading = true;
+                if(!this.directory && !this.file)
+                    this.loading = true;
                 let arr = this.path.split('/');
-                const repoName = arr[2];
+                this.repository = arr[2];
                 let filepath = arr.slice(3).join('/');
-                let dataUrl = this.$apiUrl+'repos/'+this.username+'/'+repoName+'/contents/'+filepath;
+                let dataUrl = this.$apiUrl+'repos/'+this.username+'/'+this.repository+'/contents/'+filepath;
 
                 this.$axios.get(dataUrl).then(
                     res => {
@@ -98,11 +100,17 @@ export default {
                         if(data.type)this.file = data;
                         else this.directory = data;
                         this.reload = false;
+                        this.loading = false;
                     }
                 ).catch(
-                    err=>{this.error = err.status;}
+                    err=>{this.error = err;}
                 )
+            }else{
+               
+                this.repository = '';
             }
+            this.directory = null;
+            this.file = null;
         }
     },
     mounted(){

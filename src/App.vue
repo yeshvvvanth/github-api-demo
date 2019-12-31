@@ -49,15 +49,24 @@ small{
 
 /* Input styling */
 button{
-  background-color: rgb(108, 108, 255);
+
   border:none;
   outline: none;
   border-radius: 4px;
   padding: 8px 12px; 
-  color:white;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: bold;
+
+  background-color: whitesmoke;
+  border: 1px solid lightgray;
+  color:darkslategray;
 }
+.primary{
+  background-color: rgb(60, 145, 255);
+  color:white;
+  border:none;
+}
+
 input {
   padding: 8px 12px;
   border:1px solid lightslategray;
@@ -95,9 +104,17 @@ input {
   align-items: flex-start;
 }
 
-
-.full-height{
+.screen-width{
+  width: 100vw;
+}
+.screen-height{
   height: 100vh;
+}
+.full-width{
+  width: 100%;
+}
+.full-height{
+  height: 100%;
 }
 
 </style>

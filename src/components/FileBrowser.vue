@@ -1,7 +1,17 @@
 <template>
-  <div id='file-browser'>
+  <div id='file-browser' class="app-area">
 
       <div class="flex-column ">
+          <div class="flex-row justify-space-between align-center file-bar"
+            v-if="backPath.lastIndexOf('/')>0"
+          >
+              <router-link 
+                :to="backPath"
+                class="router-link"
+              >
+                <span class="back-button">..</span>
+              </router-link>
+          </div>
           <div v-for="d in entries" :key="d.id" class="flex-row justify-space-between align-center file-bar">
               <router-link 
                 :to="path+'/'+d.name"
@@ -40,13 +50,22 @@ export default {
                 }
             )
             return sorted;
+        },
+        backPath(){
+            let path = this.$route.path;
+            let bpath = path.substring(0,path.lastIndexOf('/'));
+            return bpath;
         }
     }
 }
 </script>
 
 <style>
-
+.back-button{
+    padding: 4px 16px;
+    background-color: aliceblue;
+    border-radius: 4px;
+}
 .file-bar{
     padding: 8px 12px;
     border: 1px solid rgb(214, 225, 236);

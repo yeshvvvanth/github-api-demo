@@ -52,7 +52,7 @@ export default {
 }
 
 .underline{
-    border-bottom: 1px solid rgb(110, 147, 184);
+    border-bottom: 1px solid rgb(211, 211, 211);
     margin-bottom: 16px;
 }
 #user-panel{
