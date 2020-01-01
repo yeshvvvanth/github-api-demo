@@ -1,10 +1,14 @@
 <template>
   <div class="flex-column">
     <Screen :loading="loading" :user="user" :error="error"/>
-    <div 
+
+    <i class="fas fa-circle-notch"
         v-show="reload"
         id="loading-bar"
-    />
+    
+    >
+
+    </i>
     
     <RepoContainer :user="this.user" :repository="repository">
 
@@ -146,12 +150,15 @@ export default {
     position: fixed;
     right:16px;
     top: 16px;
-    height: 16px;
-    width: 16px;
-    background-color: white;
+    height: 32px;
+    width: 32px;
+    color: white;
+    transform-origin: 50% 50%;
+
+    /* background-color: white; */
 
     animation-name: spin;
-    animation-duration: 4000ms;
+    animation-duration: 400ms;
     animation-iteration-count: infinite;
 }
 @keyframes spin {

@@ -4,6 +4,9 @@ import router from './router'
 import axios from 'axios'
 Vue.config.productionTip = false
 
+import '@fortawesome/fontawesome-free/css/all.css'
+
+
 Vue.prototype.$apiUrl = 'https://api.github.com/'
 Vue.prototype.$axios = axios;
 

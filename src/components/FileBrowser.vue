@@ -13,12 +13,16 @@
               </router-link>
           </div>
           <div v-for="d in entries" :key="d.id" class="flex-row justify-space-between align-center file-bar">
-              <router-link 
-                :to="path+'/'+d.name"
-                class="router-link"
-              >
-                {{d.name}}
-              </router-link>
+              <span>
+                <i class="margin-right-8" :class="getIcon(d)"  />
+                <router-link 
+                    :to="path+'/'+d.name"
+                    class="router-link"
+                >
+                
+                    {{d.name}}
+                </router-link>
+              </span>
 
               <p>
                   {{d.size}}
@@ -56,11 +60,25 @@ export default {
             let bpath = path.substring(0,path.lastIndexOf('/'));
             return bpath;
         }
+    },
+    methods:{
+        getIcon(file){
+            return file.type=='dir'?'fas fa-folder folder':'far fa-file-alt file'
+        }
     }
 }
 </script>
 
 <style>
+.file{
+    color: lightslategray;
+}
+.folder{
+    color:slategray;
+}
+.margin-right-8{
+    margin-right:4px;
+}
 .back-button{
     padding: 4px 16px;
     background-color: aliceblue;

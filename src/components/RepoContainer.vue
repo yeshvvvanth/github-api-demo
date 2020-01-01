@@ -6,6 +6,7 @@
                 <h2>
                     Github
                 </h2>
+               
             </router-link>
         </div>
         <div id="user-area" class="flex-column screen-width align-center underline" v-show="repository">
