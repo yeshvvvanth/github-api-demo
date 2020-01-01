@@ -5,8 +5,11 @@
                 error {{this.error}}
             </h1>
         </div>
-        <div v-else>
-            <h1>
+        <div v-else id="loading-indicator">
+            <i class="fas fa-spinner spinner">
+
+            </i>
+            <h1 >
                 loading ...
             </h1>
         </div>
@@ -37,11 +40,18 @@ export default {
 </script>
 
 <style>
+
+#loading-indicator{
+    color:darkslategray;
+}
+#loading-indicator i{
+    font-size:36px;
+}
 #obscreen{
     position: absolute;
     min-width: 100vw;
     min-height: 100vh;
-    background-color: floralwhite;
+    background-color: aliceblue;
     margin: 0;
     z-index: 9;
     

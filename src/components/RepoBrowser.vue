@@ -29,6 +29,11 @@
                         </small>
                     </p>
                 </div>
+                <div v-if="repos.length == 0">
+                    <p>
+                        This user has no Public Repositories.
+                    </p>
+                </div>  
             </div>
         </div>
     </div>
@@ -58,9 +63,7 @@ export default {
 #user-panel{
     margin-right: 32px;
 }
-#user-panel img{
-    border-radius: 4px;
-}
+
 
 #repo-browser{
     text-align: left;

@@ -2,7 +2,7 @@
   <div class="flex-column">
     <Screen :loading="loading" :user="user" :error="error"/>
 
-    <i class="fas fa-circle-notch"
+    <i class="fas fa-circle-notch spinner"
         v-show="reload"
         id="loading-bar"
     
@@ -10,7 +10,11 @@
 
     </i>
     
-    <RepoContainer :user="this.user" :repository="repository">
+    <RepoContainer 
+        :user="this.user" 
+        :repository="repository"
+        :loading="reload"
+    >
 
         <RepoBrowser 
             v-if="isUserPage"
@@ -91,8 +95,6 @@ export default {
    
             if(!this.isUserPage){
                 this.reload = true;
-                if(!this.directory && !this.file)
-                    this.loading = true;
                 let arr = this.path.split('/');
                 this.repository = arr[2];
                 let filepath = arr.slice(3).join('/');
@@ -148,17 +150,17 @@ export default {
 <style>
 #loading-bar{
     position: fixed;
+    font-size: 20px;
     right:16px;
     top: 16px;
-    height: 32px;
-    width: 32px;
     color: white;
-    transform-origin: 50% 50%;
 
     /* background-color: white; */
+}
 
+.spinner{
     animation-name: spin;
-    animation-duration: 400ms;
+    animation-duration: 1000ms;
     animation-iteration-count: infinite;
 }
 @keyframes spin {

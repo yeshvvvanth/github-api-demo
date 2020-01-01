@@ -86,7 +86,7 @@ export default {
 }
 .file-bar{
     padding: 8px 12px;
-    border: 1px solid rgb(214, 225, 236);
+    border: 1px solid var(--folder-border);
 }
 
 .file-bar:hover{

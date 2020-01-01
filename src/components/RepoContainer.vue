@@ -44,10 +44,21 @@
                  History
              </button>
         </div>
-        <div class="flex-column">
+        <div class="flex-column" v-show="!loading">
 
             <slot/>
 
+        </div>
+        <div id="loading-div" 
+            v-show="loading"
+            class="flex-column justify-center align-center app-area"
+        >
+            <i class="fas fa-spinner spinner">
+
+            </i>
+            <p>
+                Loading
+            </p>
         </div>
 
     </div>
@@ -68,10 +79,10 @@
 
 <script>
 export default {
-    props:['user','repository'],
+    props:['user','repository','loading'],
     computed:{
         username(){
-            return this.user ? this.user.login : '';
+            return this.user ? this.user.login : this.$route.params.id;
         },
         path(){
             return this.$route.path;
@@ -88,9 +99,21 @@ export default {
 </script>
 
 <style>
+#loading-div{
+    height: 200px;
+    border:1px solid var(--folder-border);
+    border-radius: 4px;
+    margin-top: 16px;
+}
+#loading-div > i{
+    font-size: 24px;
+    color: lightslategray;
+
+}
 #top-bar{
     background-color: #24292e;
     padding: 8px 16px;
+    box-sizing: border-box;
 }
 #top-bar * {
     color: white;

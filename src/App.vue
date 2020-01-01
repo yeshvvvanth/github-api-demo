@@ -7,6 +7,12 @@
 </template>
 
 <style>
+
+:root{
+  --folder-border:rgb(214, 225, 236);
+  
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -45,6 +51,10 @@ small{
 }
 .red{
   background-color: red;
+}
+
+img{
+  border-radius: 4px;
 }
 
 /* Input styling */
