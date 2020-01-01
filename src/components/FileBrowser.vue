@@ -25,7 +25,7 @@
               </span>
 
               <p>
-                  {{d.size}}
+                  {{getSize(d)}}
               </p>
           </div>
       </div>
@@ -64,6 +64,22 @@ export default {
     methods:{
         getIcon(file){
             return file.type=='dir'?'fas fa-folder folder':'far fa-file-alt file'
+        },
+        getSize(file){
+            let size = ''
+            if(file.type=='file'){
+                let nsize = file.size;
+                let suffix = 'B'
+                if(nsize>1000000.0){
+                    suffix = 'Mb'
+                    nsize /= 1000000.0;
+                }else if(nsize>1000){
+                    suffix = 'Kb'
+                    nsize /= 1000.0;
+                }
+                size = (Math.round(nsize * 10) / 10)+' '+suffix
+            }
+            return size;
         }
     }
 }

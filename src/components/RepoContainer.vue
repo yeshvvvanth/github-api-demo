@@ -17,13 +17,15 @@
                             {{this.username}}
                         </router-link>
                         /
-                        <span>{{this.repository}}</span>
+                        <b>{{this.repository}}</b>
                     </div>
              
                     <img :src="user.avatar_url" :alt="username" width="32" height="32">
             </div>
         </div>
-        <div v-show="repository&&parts.length>0" class="flex-row justify-space-between align-center app-area">
+        <div v-show="repository" class="flex-row justify-space-between align-end app-area"
+            :class="historyMode?'underline':''" style="margin-top:8px"
+        >
             <div>
                 <router-link 
                     class="repo-name"
@@ -40,6 +42,7 @@
                     </router-link>
                 </span> 
             </div>
+       
             <span>
                 <a :href="fileUrl" :download="file?file.name:''">
                     <button
@@ -50,17 +53,26 @@
                         Download
                     </button>
                 </a>
+        
+                <button style="margin-left:4px;" 
+                    @click="historyMode=!historyMode"
+                >
+                    <i class="fas fa-history" v-show="!historyMode"/>
+                    <i class="fas fa-folder" v-show="historyMode"/>
 
-                <button style="margin-left:4px;">
-                    <i class="fas fa-history" />
-                    History
+                    {{historyMode?'Contents':'History'}}
                 </button>
             </span>
         </div>
-        <div class="flex-column" v-show="!loading">
+        <div class="flex-column" v-show="!loading&&!historyMode">
 
             <slot/>
 
+        </div>
+        <div class="flex-column" v-show="historyMode">
+            <HistoryViewer
+                :commits="commits"
+            />
         </div>
         <div id="loading-div" 
             v-show="loading"
@@ -91,11 +103,14 @@
 </template>
 
 <script>
+import HistoryViewer from '@/components/HistoryViewer.vue'
 export default {
-    props:['user','repository','loading','file'],
+    components:{HistoryViewer},
+    props:['user','repository','loading','file','commits'],
     data(){
         return {
-            fileUrl:''
+            fileUrl:'',
+            historyMode:false
         }
     },
     computed:{
@@ -120,6 +135,9 @@ export default {
                 let blob = new Blob([data], {type: "octet/stream"});
                 this.fileUrl = window.URL.createObjectURL(blob);
             }
+        },
+        $route(){
+            this.historyMode = false;
         }
 
     }
@@ -158,6 +176,8 @@ export default {
     margin: 0px;
     background-color: whitesmoke;
 }
-
+#user-area b{
+    font-size: 14px;
+}
 
 </style>

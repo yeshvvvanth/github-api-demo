@@ -2,19 +2,13 @@
   <div class="flex-column">
     <Screen :loading="loading" :user="user" :error="error"/>
 
-    <i class="fas fa-circle-notch spinner"
-        v-show="reload"
-        id="loading-bar"
-    
-    >
-
-    </i>
     
     <RepoContainer 
         :user="this.user" 
         :repository="repository"
         :loading="reload"
         :file="file"
+        :commits="commits"
     >
 
         <RepoBrowser 
@@ -55,6 +49,7 @@ export default {
             directory:null,
             repository:'',
             file:null,
+            commits:null,
             loading:true,
             error:null,
             reload: false,
@@ -99,7 +94,9 @@ export default {
                 let arr = this.path.split('/');
                 this.repository = arr[2];
                 let filepath = arr.slice(3).join('/');
-                let dataUrl = this.$apiUrl+'repos/'+this.username+'/'+this.repository+'/contents/'+filepath;
+                let repoUrl = this.$apiUrl+'repos/'+this.username+'/'+this.repository
+                let dataUrl = repoUrl+'/contents/'+filepath;
+                let commitUrl = repoUrl+'/commits?path='+filepath
 
                 this.$axios.get(dataUrl).then(
                     res => {
@@ -108,6 +105,13 @@ export default {
                         else this.directory = data;
                         this.reload = false;
                         this.loading = false;
+                    }
+                ).catch(
+                    err=>{this.error = err;}
+                )
+                this.$axios.get(commitUrl).then(
+                    res => {
+                        this.commits = res.data;
                     }
                 ).catch(
                     err=>{this.error = err;}

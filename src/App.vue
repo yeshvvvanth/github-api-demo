@@ -113,6 +113,9 @@ input {
 .align-start{
   align-items: flex-start;
 }
+.align-end{
+  align-items: flex-end;
+}
 
 .screen-width{
   width: 100vw;

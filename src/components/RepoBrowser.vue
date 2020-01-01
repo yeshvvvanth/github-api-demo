@@ -3,10 +3,25 @@
         <div class="flex-column align-start" id="user-panel">
             <img :src="user.avatar_url" :alt="user.login" width="256" height="256">
             <h2>
-                {{user.login}}
+                {{user.name}}
             </h2>
-            <p>
-                User details etc
+            <h4 style="margin-top:0px;color:slategray">
+                {{user.login}}
+            </h4>
+            <p v-if="user.location">
+                <i class="fas fa-map-marker-alt">
+
+                </i>
+                {{user.location}}
+            </p>
+            <p v-if="user.bio">
+                {{user.bio}}
+            </p>
+            <p v-if="user.blog">
+                <i class="fas fa-link"/>
+                <a :href="user.blog" class="router-link">
+                    {{user.blog}}
+                </a>
             </p>
         </div>
         <div  class="flex-column flex1">
@@ -16,7 +31,11 @@
                 </h3>
             </div>
             <div id="repo-container" class="flex-row flex1 ">
-                <div class="flex-column align-start repo-card"  v-for="r in repos" :key="r.id">
+                <div class="flex-column align-start justify-space-between repo-card" 
+                    style="padding-bottom:0px;" 
+                    v-for="r in repos" :key="r.id"
+                >
+                    <span>
                     <router-link 
                         class="repo-name"
                         :to="'/'+user.login+'/'+r.name"
@@ -25,7 +44,24 @@
                     </router-link>
                     <p>
                         <small>
-                        some serious details about this particular repository
+                                {{r.description}}
+                        </small>
+                    </p>
+
+                    </span>
+                    <p>
+                        <small>
+                            
+                            <span v-if="r.stargazers_count" style="margin-right:4px;">
+                                <i class="fas fa-star"/>
+                                {{r.stargazers_count}}
+
+                            </span>
+                            
+                            <span v-if="r.forks_count">
+                                <i class="fas fa-code-branch"/>
+                                {{r.forks_count}}
+                            </span>
                         </small>
                     </p>
                 </div>
@@ -61,7 +97,10 @@ export default {
     margin-bottom: 16px;
 }
 #user-panel{
+    box-sizing: border-box;
     margin-right: 32px;
+    width: 256px;
+
 }
 
 
@@ -76,7 +115,8 @@ export default {
 .repo-card{
     padding: 16px;
     width: 412px;
-    height: 120px;
+    min-height: 40px;
+    max-height: 120px;
     border: 1px solid rgb(218, 225, 231);
     margin: 8px;
     border-radius: 4px;
