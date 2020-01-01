@@ -23,7 +23,7 @@
                 type="submit"
                 @click="goToRepo"
             >
-                Go
+                <i class="fas fa-search" />
             </button>
         </form>
         

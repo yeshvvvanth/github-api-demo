@@ -29,7 +29,7 @@
                         </small>
                     </p>
                 </div>
-                <div v-if="repos.length == 0">
+                <div v-if="repos && repos.length == 0">
                     <p>
                         This user has no Public Repositories.
                     </p>

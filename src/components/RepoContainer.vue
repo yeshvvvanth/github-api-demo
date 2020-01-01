@@ -40,9 +40,22 @@
                     </router-link>
                 </span> 
             </div>
-             <button>
-                 History
-             </button>
+            <span>
+                <a :href="fileUrl" :download="file?file.name:''">
+                    <button
+                        v-show="file"
+                    >
+                        <i class="fas fa-download" />
+
+                        Download
+                    </button>
+                </a>
+
+                <button style="margin-left:4px;">
+                    <i class="fas fa-history" />
+                    History
+                </button>
+            </span>
         </div>
         <div class="flex-column" v-show="!loading">
 
@@ -79,7 +92,12 @@
 
 <script>
 export default {
-    props:['user','repository','loading'],
+    props:['user','repository','loading','file'],
+    data(){
+        return {
+            fileUrl:''
+        }
+    },
     computed:{
         username(){
             return this.user ? this.user.login : this.$route.params.id;
@@ -94,11 +112,22 @@ export default {
         repoPath(){
             return '/'+this.username+'/'+this.repository;
         }
+    },
+    watch:{
+        file(){
+            if(this.file){
+                let data = atob(this.file.content) 
+                let blob = new Blob([data], {type: "octet/stream"});
+                this.fileUrl = window.URL.createObjectURL(blob);
+            }
+        }
+
     }
 }
 </script>
 
 <style>
+
 #loading-div{
     height: 200px;
     border:1px solid var(--folder-border);

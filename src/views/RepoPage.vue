@@ -14,6 +14,7 @@
         :user="this.user" 
         :repository="repository"
         :loading="reload"
+        :file="file"
     >
 
         <RepoBrowser 
