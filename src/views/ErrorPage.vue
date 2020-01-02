@@ -3,18 +3,18 @@
     <div>
 
       <h1 v-if="status==404">
+          <i class="fas fa-exclamation-triangle"/>
           Page Not found 404
       </h1>
       <h1 v-else>
           {{errorMessage}}
       </h1>
 
-      <router-link
-        class="router-link"
-        to="/"
+      <button
+        @click="$router.go(-1)"
       >
         Go Back
-      </router-link>
+      </button>
     </div>
 
   </div>

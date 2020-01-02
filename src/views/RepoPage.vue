@@ -1,24 +1,36 @@
 <template>
   <div class="flex-column">
-    <Screen :loading="loading" :user="user"/>
+    <LoadingScreen :loading="loading" :user="user"/>
+
+    <div id="top-bar" v-show="!error"
+        class="flex-row justify-space-between align-center full-width"
+    >
+        <router-link to="/">
+            <h1 class="inline">
+                <i class="fab fa-github" style="font-weight:400;"/>
+            </h1>
+            <h2 class="inline">
+                Github 
+            </h2>
+            
+        </router-link>
+    </div>
 
     <ErrorPage v-if="error" :error="error"/>
-    <RepoContainer 
+    <RepoBrowser 
+        v-else-if="isUserPage"
+        :user="user"
+        :repos="repos"
+    />
+    <FileManager 
         v-else
-        :user="this.user" 
-        :repository="repository"
-        :loading="reload"
+        :loading="reloading"
         :file="file"
-        :commits="commits"
+        :history="history"
+        @getCommits="getCommitPage"
     >
-
-        <RepoBrowser 
-            v-if="isUserPage"
-            :user="user"
-            :repos="repos"
-        />
         <FileViewer 
-            v-else-if="file"
+            v-if="file"
             :file="file"
         />
         <FileBrowser 
@@ -26,36 +38,36 @@
             :directory="directory"
         />
 
-    </RepoContainer>
+    </FileManager>
+
     
 
   </div>
 </template>
 
 <script>
-import Screen from '@/components/Screen.vue'
+import LoadingScreen from '@/components/Screen.vue'
 import FileViewer from '@/components/FileViewer.vue'
 import FileBrowser from '@/components/FileBrowser.vue'
 import RepoBrowser from '@/components/RepoBrowser.vue'
-import RepoContainer from '@/components/RepoContainer.vue'
+import FileManager from '@/components/FileManager.vue'
 import ErrorPage from '@/views/ErrorPage.vue'
 
 export default {
     components:{
-        Screen,FileBrowser,RepoContainer,FileViewer,RepoBrowser,ErrorPage
+        LoadingScreen,FileBrowser,FileManager,FileViewer,RepoBrowser,ErrorPage
     },
     data(){
         return {
             user:null,
             repos:null,
             directory:null,
-            repository:'',
             file:null,
-            commits:null,
+            history:{commits:[],page:1,pageMax:99999},
 
             error:null,
             loading:true,
-            reload: false,
+            reloading: false,
         }
     },
     methods:{
@@ -88,42 +100,60 @@ export default {
         fetchPageData(){
    
             if(!this.isUserPage){
-                this.reload = true;
+                this.history.pageMax = 99999;
+                this.history.page = 1;
+                
+                this.reloading = true;
                 let arr = this.path.split('/');
-                this.repository = arr[2];
+                let repository = arr[2];
                 let filepath = arr.slice(3).join('/');
-                let repoUrl = this.$apiUrl+'repos/'+this.username+'/'+this.repository
+                let repoUrl = this.$apiUrl+'repos/'+this.username+'/'+repository
                 let dataUrl = repoUrl+'/contents/'+filepath;
-                let commitUrl = repoUrl+'/commits?path='+filepath
 
                 this.$axios.get(dataUrl).then(
                     res => {
                         let data = res.data;
                         if(data.type)this.file = data;
                         else this.directory = data;
-                        this.reload = false;
+                        this.reloading = false;
                         this.loading = false;
                     }
                 ).catch(
                     err=>{this.showError(err)}
                 )
-                this.$axios.get(commitUrl).then(
-                    res => {
-                        this.commits = res.data;
-                    }
-                ).catch(
-                    err=>{this.showError(err)}
-                )
-            }else{
-               
-                this.repository = '';
+                this.fetchCommits(1);
+
             }
             this.directory = null;
             this.file = null;
         },
+        fetchCommits(page){
+            let arr = this.path.split('/');
+            let repository = arr[2];
+            let filepath = arr.slice(3).join('/');
+            let repoUrl = this.$apiUrl+'repos/'+this.username+'/'+repository
+            let commitUrl = repoUrl+'/commits?path='+filepath+'&per_page=50'+'&page='+page
+            this.$axios.get(commitUrl).then(
+                res => {
+                    if(res.data.length>0){
+                        this.history.page = page;
+                        this.history.commits = res.data;
+                        if(res.data.length<50){
+                            this.history.pageMax = this.history.page;
+                        }
+                    }
+                    console.log('got new data')
+                }
+            ).catch(
+                err=>{this.showError(err)}
+            )
+        },
+        getCommitPage(page){
+            this.fetchCommits(page);
+        }
+        ,
         showError(error){
             // if(this.$route.name != 'error'){
-
             //     this.$router.push({name:'error',params:{
             //         error:error,
             // }})
@@ -162,15 +192,6 @@ export default {
 </script>
 
 <style>
-#loading-bar{
-    position: fixed;
-    font-size: 20px;
-    right:16px;
-    top: 16px;
-    color: white;
-
-    /* background-color: white; */
-}
 
 .spinner{
     animation-name: spin;
@@ -183,6 +204,17 @@ export default {
     } to { 
         transform: rotate(360deg); 
     }
+}
+#top-bar{
+    background-color: var(--primary);
+    padding: 8px 32px;
+    box-sizing: border-box;
+}
+#top-bar * {
+    color: white;
+    margin: 0;
+    border-radius: 4px;
+    text-decoration: none;
 }
 
 </style>

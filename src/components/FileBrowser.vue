@@ -103,10 +103,11 @@ export default {
 .file-bar{
     padding: 8px 12px;
     border: 1px solid var(--folder-border);
+    background-color: white;
 }
 
 .file-bar:hover{
-    background-color: rgb(246, 251, 255);
+    background-color: rgb(230, 239, 248);
 }
 .file-bar > *{
     margin: 0;

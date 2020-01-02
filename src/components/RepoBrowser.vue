@@ -1,6 +1,6 @@
 <template>
-    <div id='repo-browser' class="flex-row">
-        <div class="flex-column align-start" id="user-panel">
+    <div id='repo-browser' class="flex-row justify-center">
+        <div class="flex-column align-start" id="user-panel" v-if="user">
             <img :src="user.avatar_url" :alt="user.login" width="256" height="256">
             <h2>
                 {{user.name}}
@@ -24,13 +24,13 @@
                 </a>
             </p>
         </div>
-        <div  class="flex-column flex1">
+        <div id="repo-container"  class="flex-column ">
             <div class="underline">
                 <h3 >
                     Public Repositories
                 </h3>
             </div>
-            <div id="repo-container" class="flex-row flex1 ">
+            <div  class="flex-row flex-wrap">
                 <div class="flex-column align-start justify-space-between repo-card" 
                     style="padding-bottom:0px;" 
                     v-for="r in repos" :key="r.id"
@@ -93,33 +93,37 @@ export default {
 }
 
 .underline{
-    border-bottom: 1px solid rgb(211, 211, 211);
+    border-bottom: 1px solid var(--folder-border);
     margin-bottom: 16px;
 }
 #user-panel{
     box-sizing: border-box;
-    margin-right: 32px;
+    margin: 0 32px;
     width: 256px;
 
 }
 
 
 #repo-browser{
+    box-sizing: border-box;
     text-align: left;
-    width: 80vw;
+    width: 100%;
     margin-top: 32px;
 }
 #repo-container{
-    flex-wrap: wrap;
+    width: 930px;
+    margin: 0 28px;
 }
 .repo-card{
     padding: 16px;
     width: 412px;
     min-height: 40px;
     max-height: 120px;
-    border: 1px solid rgb(218, 225, 231);
     margin: 8px;
     border-radius: 4px;
+    /* border: 1px solid rgb(218, 225, 231); */
+    background-color: white;
+    box-shadow: 2px 2px 6px rgb(218, 229, 245);
 }
 
 </style>

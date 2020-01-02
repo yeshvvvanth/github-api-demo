@@ -9,8 +9,9 @@
 <style>
 
 :root{
-  --folder-border:rgb(214, 225, 236);
-  
+  /* --folder-border:rgb(214, 225, 236); */
+  --folder-border: rgb(204, 223, 236);
+  --primary: #26343f;
 }
 
 #app {
@@ -18,11 +19,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--primary);
   margin: 0;
   padding: 0;
-  
+  background-color: ghostwhite;
+  min-height: 100vh;
 }
+:i{
+  color:var(--primary);
+}
+
 
 #nav {
   padding: 30px;
@@ -52,12 +58,18 @@ small{
 .red{
   background-color: red;
 }
-
+.yellow{
+  background-color: yellow;
+}
 .inline{
   display: inline;
 }
 .inline-block{
   display: inline-block;
+}
+
+.borderless{
+  border:none;
 }
 
 img{
@@ -73,17 +85,22 @@ button{
   padding: 8px 12px; 
   cursor: pointer;
   font-weight: bold;
+  color: var(--primary);
 
-  background-color: whitesmoke;
-  border: 1px solid lightgray;
-  color:darkslategray;
+  background-color: white;
+  border: 1px solid var(--folder-border);
 }
 .primary{
   background-color: rgb(60, 145, 255);
   color:white;
   border:none;
 }
-
+.margin-8{
+  margin:8px;
+}
+.margin-4{
+  margin:4px;
+}
 input {
   padding: 8px 12px;
   border:1px solid lightslategray;
@@ -102,7 +119,9 @@ input {
   display: flex;
   flex-direction: column;
 }
-
+.flex-wrap{
+  flex-wrap: wrap;
+}
 .flex1{
   flex:1;
 }

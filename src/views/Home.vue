@@ -17,9 +17,12 @@
                 id="repoName" 
                 v-model="repoName" 
                 placeholder="enter user name"
+                class="borderless"
             />
 
             <button
+                class="borderless"
+                id="search-button"
                 type="submit"
                 @click="goToRepo"
             >
@@ -53,10 +56,8 @@ export default {
 }
 </script>
 
-<style scoped>
-h1{
-    color: darkslategray;
-}
+<style >
+
 #home-container{
     min-height: 100vh;
     background: linear-gradient(to bottom,rgb(215, 236, 255),white);
@@ -64,12 +65,17 @@ h1{
     padding: 0;
 }
 
+#search-button{
+    background-color: white;
+    color: skyblue;
+    font-weight: 600;
+}
+
 .brow{
     /* border: 1px solid white; */
     /* box-shadow: 0 0 12px lightblue;  */
 }
 .brow > *{
-    border:none;
     padding: 16px;
     border-radius: 8px;
     outline: none;
@@ -84,12 +90,7 @@ h1{
     border-bottom-right-radius: 0px;
     border-right: none;
 }
-.brow button{
-    background-color: white;
-    color: skyblue;
-    font-weight: 600;
-}
-.brow > *:focus{
+#repoName:focus,.brow > *:active{
     box-shadow: inset 0 0 4px lightgray;
 }
 

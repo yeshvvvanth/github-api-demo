@@ -1,5 +1,5 @@
 <template>
-    <div id="obscreen" v-show="loading" class="flex-column justify-center">
+    <div id="loading-screen" v-show="loading" class="flex-column justify-center">
         <div id="loading-indicator">
             <i class="fas fa-spinner spinner" />
             <h1 >
@@ -12,22 +12,7 @@
 <script>
 export default {
     props:{
-        user:{},
         loading:{},
-        error:{}
-    },
-    data(){
-        return {
-            testData:'haha'
-        }
-    },
-    computed:{
-        isError(){
-            return this.error;
-        },
-        showScreen(){
-            return this.loading || this.isError;
-        },
     }
 }
 </script>
@@ -40,7 +25,7 @@ export default {
 #loading-indicator i{
     font-size:36px;
 }
-#obscreen{
+#loading-screen{
     position: absolute;
     min-width: 100vw;
     min-height: 100vh;
