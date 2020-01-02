@@ -102,7 +102,7 @@ export default {
             if(!this.isUserPage){
                 this.history.pageMax = 99999;
                 this.history.page = 1;
-                
+
                 this.reloading = true;
                 let arr = this.path.split('/');
                 let repository = arr[2];
@@ -142,7 +142,6 @@ export default {
                             this.history.pageMax = this.history.page;
                         }
                     }
-                    console.log('got new data')
                 }
             ).catch(
                 err=>{this.showError(err)}
