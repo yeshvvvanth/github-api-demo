@@ -7,11 +7,8 @@
                Commits on {{k}}
             </h5>
             <div v-for="c in h" :key="c.id" class="commit-container">
-                <p>
-                    <b>
-
+                <p class="commit-message">
                     {{c.commit.message}} 
-                    </b>
                 </p>
                 <span>
                     <b>
@@ -26,6 +23,18 @@
                 </span>
             </div>
         </div>
+
+            <div v-if="pages.length>1">
+                <span>
+                    <button v-for="(p,n) in pages" :key="n" 
+                        :class="page==n?'primary':''"
+                        @click="page=n"
+                        class="page-button"
+                    >
+                        {{n+1}}
+                    </button>
+                </span>
+            </div>
         
     </div>
 </template>
@@ -41,11 +50,17 @@ export default {
             return darr.join(' ');
         }
     },
+    data(){
+        return {
+            page:0
+        }
+    },
     computed:{
         history(){
             let hist = {}
-            if(this.commits){
-                this.commits.forEach(
+            let commits = this.pages[this.page]
+            if(commits){
+                commits.forEach(
                     c => {
                         let key = this.getDateString(c.commit.committer.date)
                         if(hist[key]){
@@ -58,6 +73,19 @@ export default {
                 )
             }
             return hist;
+        },
+        pages(){
+            let pages = []
+            if(this.commits){
+                let pageSize = 50;
+                let ind  =0;
+                let len = this.commits.length;
+                while(ind<len){
+                    pages.push(this.commits.slice(ind,ind+pageSize))
+                    ind += pageSize
+                }
+            }
+            return pages;
         }
     }
 }
@@ -67,7 +95,7 @@ export default {
 .commit-container{
     border: 1px solid var(--folder-border);
     border-radius:4px;
-    height: 80px;
+    min-height: 80px;
     margin: 8px;
     padding: 0 8px;
     box-sizing: border-box;
@@ -76,5 +104,12 @@ export default {
 .date{
     display: inline;
     font-size: 12px;
+}
+.page-button{
+    margin-right:4px;
+}
+.commit-message{
+    font-size: 12px;
+    word-wrap: break-word;
 }
 </style>
