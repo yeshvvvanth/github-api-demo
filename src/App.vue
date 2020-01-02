@@ -53,6 +53,13 @@ small{
   background-color: red;
 }
 
+.inline{
+  display: inline;
+}
+.inline-block{
+  display: inline-block;
+}
+
 img{
   border-radius: 4px;
 }
@@ -83,7 +90,9 @@ input {
   border-radius: 4px;
   color: darkslategray;
 }
-
+::placeholder{
+  color: lightsteelblue;
+}
 /* flexbox stuff */
 
 .flex-row{
@@ -122,6 +131,9 @@ input {
 }
 .screen-height{
   height: 100vh;
+}
+.screen-height-min{
+  min-height: 100vh;
 }
 .full-width{
   width: 100%;

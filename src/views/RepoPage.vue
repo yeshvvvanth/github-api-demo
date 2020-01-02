@@ -1,9 +1,10 @@
 <template>
   <div class="flex-column">
-    <Screen :loading="loading" :user="user" :error="error"/>
+    <Screen :loading="loading" :user="user"/>
 
-    
+    <ErrorPage v-if="error" :error="error"/>
     <RepoContainer 
+        v-else
         :user="this.user" 
         :repository="repository"
         :loading="reload"
@@ -37,10 +38,11 @@ import FileViewer from '@/components/FileViewer.vue'
 import FileBrowser from '@/components/FileBrowser.vue'
 import RepoBrowser from '@/components/RepoBrowser.vue'
 import RepoContainer from '@/components/RepoContainer.vue'
+import ErrorPage from '@/views/ErrorPage.vue'
 
 export default {
     components:{
-        Screen,FileBrowser,RepoContainer,FileViewer,RepoBrowser
+        Screen,FileBrowser,RepoContainer,FileViewer,RepoBrowser,ErrorPage
     },
     data(){
         return {
@@ -50,8 +52,9 @@ export default {
             repository:'',
             file:null,
             commits:null,
-            loading:true,
+
             error:null,
+            loading:true,
             reload: false,
         }
     },
@@ -64,25 +67,20 @@ export default {
             this.$axios.get(userUrl).then(
                 res => {
                     let data = res.data;
-                    if(!data.message){
-                        this.user = data;
-                    }else{
-                        this.loading =false;
-                    }
+                    this.user = data;
                 }
             ).then(
                 () => 
                 this.$axios.get(dataUrl).then(
                     res => {
-                        this.loading =false;
+                        if(this.isUserPage)
+                            this.loading =false;
                         this.repos = res.data;
                     }
                 )
             ).catch(
                 err => {
-                    this.error = err.status;
-                    this.loading = false;
-                    //this.user = null;
+                    this.showError(err)
                 }
             )
             
@@ -107,14 +105,14 @@ export default {
                         this.loading = false;
                     }
                 ).catch(
-                    err=>{this.error = err;}
+                    err=>{this.showError(err)}
                 )
                 this.$axios.get(commitUrl).then(
                     res => {
                         this.commits = res.data;
                     }
                 ).catch(
-                    err=>{this.error = err;}
+                    err=>{this.showError(err)}
                 )
             }else{
                
@@ -122,6 +120,16 @@ export default {
             }
             this.directory = null;
             this.file = null;
+        },
+        showError(error){
+            // if(this.$route.name != 'error'){
+
+            //     this.$router.push({name:'error',params:{
+            //         error:error,
+            // }})
+            // }
+            this.loading = false;
+            this.error = error;
         }
     },
     mounted(){
@@ -130,6 +138,7 @@ export default {
     },
     watch:{
         $route(){
+            this.errror = null;
             this.fetchPageData();
         }
     }

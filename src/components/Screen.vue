@@ -1,14 +1,7 @@
 <template>
-    <div id="obscreen" v-show="this.showScreen" class="flex-column justify-center">
-        <div v-if="isError">
-            <h1>
-                error {{this.error}}
-            </h1>
-        </div>
-        <div v-else id="loading-indicator">
-            <i class="fas fa-spinner spinner">
-
-            </i>
+    <div id="obscreen" v-show="loading" class="flex-column justify-center">
+        <div id="loading-indicator">
+            <i class="fas fa-spinner spinner" />
             <h1 >
                 loading ...
             </h1>

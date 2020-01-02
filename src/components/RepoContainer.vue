@@ -3,13 +3,16 @@
     <div v-if="user" class="flex-column align-center">
         <div id="top-bar" class="flex-row justify-space-between align-center full-width">
             <router-link to="/">
-                <h2>
-                    Github
-                </h2>
+                    <h1 class="inline">
+                        <i class="fab fa-github" style="font-weight:400;"/>
+                    </h1>
+                    <h2 class="inline">
+                    Github 
+                    </h2>
                
             </router-link>
         </div>
-        <div id="user-area" class="flex-column screen-width align-center underline" v-show="repository">
+        <div id="user-area" class="flex-column align-center underline" v-show="repository">
 
             <div class="flex-row justify-space-between align-center app-area">
                     <div>
@@ -87,7 +90,7 @@
         </div>
 
     </div>
-    <div v-else class="flex-column justify-center screen-height">
+    <!-- <div v-else class="flex-column justify-center screen-height">
         <h1>
             Could not find user named {{this.username}}
         </h1>
@@ -97,7 +100,7 @@
                 back
             </router-link>
         </p>
-    </div>
+    </div> -->
 
 
 </template>
@@ -132,8 +135,12 @@ export default {
         file(){
             if(this.file){
                 let data = atob(this.file.content) 
+                console.log(this.file)
+                console.log(data)
                 let blob = new Blob([data], {type: "octet/stream"});
                 this.fileUrl = window.URL.createObjectURL(blob);
+                
+                //this.fileUrl = this.file.download_url;
             }
         },
         $route(){
@@ -173,6 +180,8 @@ export default {
     padding: 8px;
 }
 #user-area{
+    box-sizing: border-box;
+    width: 100%;
     margin: 0px;
     background-color: whitesmoke;
 }

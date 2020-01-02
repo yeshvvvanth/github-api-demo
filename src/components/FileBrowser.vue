@@ -111,7 +111,9 @@ export default {
 .file-bar > *{
     margin: 0;
 }
-
+/* .file-bar:first-child{
+    background-color: aliceblue;
+} */
 .file-bar:not(:first-child){
     border-top: none;
 }

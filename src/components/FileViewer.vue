@@ -24,10 +24,11 @@ export default {
 
 <style>
 code{
-   display: block;
+  display: block;
   white-space: pre-wrap;  
   min-height: 120px;
   text-align: left;
+  word-wrap: break-word;
 }
 
 </style>
