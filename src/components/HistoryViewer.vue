@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-column app-area" style="text-align:left;">
+    <div class="flex-column padding-8" style="text-align:left;">
 
 
         <div v-for="(h,k) in localHistory" :key="k" >

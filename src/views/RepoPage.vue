@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-column">
+  <div id="main-repo-column" class="flex-column align-center">
     <LoadingScreen :loading="loading" :user="user"/>
 
     <div id="top-bar" v-show="!error"
@@ -28,6 +28,7 @@
         :file="file"
         :history="history"
         @getCommits="getCommitPage"
+        class="wide"
     >
         <FileViewer 
             v-if="file"
@@ -191,7 +192,19 @@ export default {
 </script>
 
 <style>
-
+.wide{
+    min-width: 900px;
+}
+@media (max-width:900px){
+    .wide{
+        min-width: 95%;
+    }
+}
+@media (max-width:520px){
+    #repo-browser{
+        flex-direction: column;
+    }
+}
 .spinner{
     animation-name: spin;
     animation-duration: 1000ms;

@@ -1,7 +1,7 @@
 <template>
     <div id='repo-browser' class="flex-row justify-center">
         <div class="flex-column align-start" id="user-panel" v-if="user">
-            <img :src="user.avatar_url" :alt="user.login" width="256" height="256">
+            <img :src="user.avatar_url" :alt="user.login" width="100%">
             <h2>
                 {{user.name}}
             </h2>
@@ -19,7 +19,7 @@
             </p>
             <p v-if="user.blog">
                 <i class="fas fa-link"/>
-                <a :href="user.blog" class="router-link">
+                <a :href="user.blog" class="router-link" >
                     {{user.blog}}
                 </a>
             </p>
@@ -30,7 +30,7 @@
                     Public Repositories
                 </h3>
             </div>
-            <div  class="flex-row flex-wrap">
+            <div  id = "repo-row" class="flex-row flex-wrap">
                 <div class="flex-column align-start justify-space-between repo-card" 
                     style="padding-bottom:0px;" 
                     v-for="r in repos" :key="r.id"
@@ -99,31 +99,38 @@ export default {
 #user-panel{
     box-sizing: border-box;
     margin: 0 32px;
-    width: 256px;
-
+    flex:1;
+    word-wrap: break-word;
 }
-
-
+#user-panel > img{
+    /* max-width: 256px; */
+}
+*{
+    word-wrap: break-word;
+}
+#repo-row{
+    /* justify-content: stretch; */
+}
 #repo-browser{
     box-sizing: border-box;
     text-align: left;
-    width: 100%;
     margin-top: 32px;
 }
 #repo-container{
-    width: 930px;
     margin: 0 28px;
+    flex: 4;
 }
 .repo-card{
     padding: 16px;
-    width: 412px;
+    max-width: 412px;
     min-height: 40px;
-    max-height: 120px;
+    /* max-height: 120px; */
     margin: 8px;
     border-radius: 4px;
     /* border: 1px solid rgb(218, 225, 231); */
     background-color: white;
     box-shadow: 2px 2px 6px rgb(218, 229, 245);
+    flex: 1 1 400px;
 }
 
 </style>

@@ -27,7 +27,7 @@ export default {
 }
 #loading-screen{
     position: absolute;
-    min-width: 100vw;
+    width: 100vw;
     min-height: 100vh;
     background-color: aliceblue;
     margin: 0;

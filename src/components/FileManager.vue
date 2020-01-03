@@ -1,9 +1,10 @@
 <template>
   
-    <div class="flex-column align-center">
+    <div id="file-manager" class="flex-column padding-8" >
 
         <div
-            class="flex-row justify-space-between align-end app-area"
+        
+            class="flex-row justify-space-between align-end margin-bottom-24"
             :class="historyMode?'underline':''" style="margin-top:8px"
         >
             <BreadCrumbs :path="$route.path"/>
@@ -95,7 +96,6 @@ export default {
     height: 200px;
     border:1px solid var(--folder-border);
     border-radius: 4px;
-    margin-top: 16px;
     background-color: white;
 }
 #loading-div > i{
@@ -103,11 +103,11 @@ export default {
     color: lightslategray;
 
 }
-
-.app-area{
-    width: 900px;
-    padding: 8px;
+#file-manager{
+    /* flex: 1 1 800px; */
+    /* width: 80%; */
 }
+
 #user-area{
     box-sizing: border-box;
     width: 100%;

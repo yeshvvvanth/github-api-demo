@@ -1,6 +1,6 @@
 <template>
-  <div id='file-viewer' class="app-area">
-    <div class="file-bar">
+  <div id='file-viewer' >
+    <div class="code-container">
      
           <code>
               {{content}}
@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 code{
   display: block;
   white-space: pre-wrap;  
@@ -30,6 +30,12 @@ code{
   text-align: left;
   word-wrap: break-word;
   
+}
+.code-container{
+    border-radius: 4px;
+    padding: 8px 12px;
+    border: 1px solid var(--folder-border);
+    background-color: white;
 }
 
 </style>

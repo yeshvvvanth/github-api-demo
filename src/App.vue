@@ -14,6 +14,9 @@
   --primary: #26343f;
 }
 
+*{
+  box-sizing: border-box;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -95,11 +98,23 @@ button{
   color:white;
   border:none;
 }
+.margin-bottom-24{
+  margin-bottom:24px
+}
+.margin-bottom-8{
+  margin-bottom:8px
+}
 .margin-8{
   margin:8px;
 }
 .margin-4{
   margin:4px;
+}
+.padding-8{
+  padding:8px;
+}
+.padding-4{
+  padding:4px;
 }
 input {
   padding: 8px 12px;
