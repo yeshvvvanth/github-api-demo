@@ -18,7 +18,7 @@
                         </small>
                     </b>
                     <p class="date">
-                        committed on {{getDateString(c.commit.committer.date)}}
+                        committed on {{getTimeString(c.commit.committer.date)}}
                     </p>
                 </span>
             </div>
@@ -66,6 +66,19 @@ export default {
             darr[1] += ','
             return darr.join(' ');
         },
+
+        getTimeString(dts) {
+            let date =  new Date(dts);
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0'+minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return strTime;
+        }
+        ,
         getPageRel(i){
             if(this.history.page+i < 1){return;}
             this.$emit('getCommits',(this.history.page+i));
