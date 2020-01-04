@@ -134,7 +134,6 @@ export default {
 }
 .commit-message{
     font-size: 12px;
-    word-wrap: break-word;
 }
 button:disabled{
     color: lightgray;

@@ -99,8 +99,8 @@ button{
   color:white;
   border:none;
 }
-.margin-bottom-24{
-  margin-bottom:24px
+.margin-bottom-16{
+  margin-bottom:16px
 }
 .margin-bottom-8{
   margin-bottom:8px
@@ -116,6 +116,9 @@ button{
 }
 .padding-4{
   padding:4px;
+}
+.padding-bottom-8{
+  padding-bottom: 8px;
 }
 input {
   padding: 8px 12px;

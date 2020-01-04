@@ -79,10 +79,12 @@ export default {
     },
     methods:{
         fetchData(mode,page=1){
-            console.log('fetch data mode '+mode);
+            // console.log('fetch data mode '+mode);
             this.loading = (mode&Load.user);
             this.reloading = (mode&Load.content);
             this.history.loading = (mode&Load.commits);
+            this.history.page = 1;
+            this.history.pageMax = 99999;
             
             const time1 = performance.now();
 
@@ -160,6 +162,13 @@ export default {
             this.errror = null;
             if(!this.isUserPage)
                 this.fetchData(Load.content|Load.commits);
+            else{
+                this.loading = true;
+                // fake loading delay to ease the transition
+                setTimeout(() => {
+                    this.loading = false;
+                }, 600);
+            }
         }
     }
     ,

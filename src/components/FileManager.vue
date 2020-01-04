@@ -3,8 +3,7 @@
     <div id="file-manager" class="flex-column padding-8" >
 
         <div
-        
-            class="flex-row justify-space-between align-end margin-bottom-24"
+            class="flex-row justify-space-between align-end margin-bottom-16 padding-bottom-8"
             :class="historyMode?'underline':''" style="margin-top:8px"
         >
             <BreadCrumbs :path="$route.path"/>
@@ -103,11 +102,6 @@ export default {
     color: lightslategray;
 
 }
-#file-manager{
-    /* flex: 1 1 800px; */
-    /* width: 80%; */
-}
-
 #user-area{
     box-sizing: border-box;
     width: 100%;
