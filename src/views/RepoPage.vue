@@ -54,6 +54,12 @@ import RepoBrowser from '@/components/RepoBrowser.vue'
 import FileManager from '@/components/FileManager.vue'
 import ErrorPage from '@/views/ErrorPage.vue'
 
+let Loads = ['user','content','commits'];
+const Load = {}
+Loads.forEach(
+    (l,n) => {Load[l] = 1<<n;}
+)
+
 export default {
     components:{
         LoadingScreen,FileBrowser,FileManager,FileViewer,RepoBrowser,ErrorPage
@@ -64,7 +70,7 @@ export default {
             repos:null,
             directory:null,
             file:null,
-            history:{commits:[],page:1,pageMax:99999},
+            history:{commits:[],page:1,pageMax:99999,loading:false},
 
             error:null,
             loading:true,
@@ -72,104 +78,95 @@ export default {
         }
     },
     methods:{
-        fetchUserData(){
-            this.loading = true;
-            let userUrl = this.$apiUrl+'users/'+this.$route.params.id;
-            let dataUrl = userUrl+'/repos'; 
-  
-            this.$axios.get(userUrl).then(
-                res => {
-                    let data = res.data;
-                    this.user = data;
-                }
-            ).then(
-                () => 
-                this.$axios.get(dataUrl).then(
-                    res => {
-                        if(this.isUserPage)
-                            this.loading =false;
-                        this.repos = res.data;
-                    }
-                )
-            ).catch(
-                err => {
-                    this.showError(err)
-                }
-            )
+        fetchData(mode,page=1){
+            console.log('fetch data mode '+mode);
+            this.loading = (mode&Load.user);
+            this.reloading = (mode&Load.content);
+            this.history.loading = (mode&Load.commits);
             
-        },
-        fetchPageData(){
-   
-            if(!this.isUserPage){
-                this.history.pageMax = 99999;
-                this.history.page = 1;
+            const time1 = performance.now();
 
-                this.reloading = true;
-                let arr = this.path.split('/');
-                let repository = arr[2];
-                let filepath = arr.slice(3).join('/');
-                let repoUrl = this.$apiUrl+'repos/'+this.username+'/'+repository
-                let dataUrl = repoUrl+'/contents/'+filepath;
+            const arr = this.path.split('/');
+            const repository = arr[2];
+            let filepath = arr.slice(3).join('/');
 
-                this.$axios.get(dataUrl).then(
-                    res => {
-                        let data = res.data;
+            const userUrl = this.$apiUrl+'users/'+this.$route.params.id;
+            const repoListUrl = userUrl+'/repos'; 
+            const repoUrl = this.$apiUrl+'repos/'+this.username+'/'+repository
+            const contentUrl = repoUrl+'/contents/'+filepath;
+            const commitUrl = repoUrl+'/commits?path='+filepath+'&per_page=50'+'&page='+page
+
+            Promise.all([
+                mode&Load.user?this.$axios.get(userUrl):false,
+                mode&Load.user?this.$axios.get(repoListUrl):false,
+                mode&Load.content?this.$axios.get(contentUrl):false,
+                mode&Load.commits?this.$axios.get(commitUrl):false,
+                ]
+            ).then(
+                ([user,repos,file,commits]) => {
+                    if(user){
+                        this.user = user.data;
+                        this.repos=repos.data;
+                    }
+                    if(file){
+                        this.file = this.directory = null;
+                        let data = file.data;
                         if(data.type)this.file = data;
                         else this.directory = data;
-                        this.reloading = false;
-                        this.loading = false;
                     }
-                ).catch(
-                    err=>{this.showError(err)}
-                )
-                this.fetchCommits(1);
-
-            }
-            this.directory = null;
-            this.file = null;
-        },
-        fetchCommits(page){
-            let arr = this.path.split('/');
-            let repository = arr[2];
-            let filepath = arr.slice(3).join('/');
-            let repoUrl = this.$apiUrl+'repos/'+this.username+'/'+repository
-            let commitUrl = repoUrl+'/commits?path='+filepath+'&per_page=50'+'&page='+page
-            this.$axios.get(commitUrl).then(
-                res => {
-                    if(res.data.length>0){
-                        this.history.page = page;
-                        this.history.commits = res.data;
-                        if(res.data.length<50){
-                            this.history.pageMax = this.history.page;
+                    if(commits){
+                        if(commits.data.length>0){
+                            this.history.page = page;
+                            this.history.commits = commits.data;
+                            if(commits.data.length<50){
+                                this.history.pageMax = this.history.page;
+                            }
+                        }
+                        else{
+                            this.history.pageMax = this.history.page -1;
                         }
                     }
+                    const elapsed = (performance.now()-time1);
+                    const minDelay = this.loading ? 500 : 300;
+                    const delay = elapsed > minDelay ? 0 : minDelay;
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.reloading = false;
+                        this.history.loading = false;
+                        
+                    },delay);
                 }
-            ).catch(
-                err=>{this.showError(err)}
             )
-        },
+            .catch(
+                err => {this.showError(err);}
+            )
+
+        }
+        ,
         getCommitPage(page){
-            this.fetchCommits(page);
+            this.fetchData(Load.commits,page);
         }
         ,
         showError(error){
-            // if(this.$route.name != 'error'){
-            //     this.$router.push({name:'error',params:{
-            //         error:error,
-            // }})
-            // }
             this.loading = false;
             this.error = error;
         }
     },
     mounted(){
-        this.fetchUserData();
-        this.fetchPageData();
+        this.fetchData(Load.user|(!this.isUserPage?(Load.content|Load.commits):0))
     },
     watch:{
         $route(){
             this.errror = null;
-            this.fetchPageData();
+            if(!this.isUserPage)
+                this.fetchData(Load.content|Load.commits);
+            else
+                {
+                    this.loading = true;
+                    setTimeout(() => {
+                        this.loading = false;
+                    }, 500);
+                }
         }
     }
     ,
@@ -193,11 +190,11 @@ export default {
 
 <style>
 .wide{
-    min-width: 900px;
+    width: 900px;
 }
 @media (max-width:900px){
     .wide{
-        min-width: 95%;
+        width: 95%;
     }
 }
 @media (max-width:520px){
