@@ -160,13 +160,6 @@ export default {
             this.errror = null;
             if(!this.isUserPage)
                 this.fetchData(Load.content|Load.commits);
-            else
-                {
-                    this.loading = true;
-                    setTimeout(() => {
-                        this.loading = false;
-                    }, 500);
-                }
         }
     }
     ,

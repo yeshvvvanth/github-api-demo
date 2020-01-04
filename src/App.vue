@@ -12,6 +12,7 @@
   /* --folder-border:rgb(214, 225, 236); */
   --folder-border: rgb(204, 223, 236);
   --primary: #26343f;
+  --blue:rgb(62, 146, 255);
 }
 
 *{

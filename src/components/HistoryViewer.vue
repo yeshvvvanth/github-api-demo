@@ -41,7 +41,12 @@
                     older
                 </button>
                 <button style="color:black;">
-                    {{history.page}}
+                    <span v-show="!history.loading">
+                        {{history.page}}
+                    </span>
+                    <span v-show="history.loading">
+                        <i class="fas fa-circle-notch spinner" style="color:var(--blue)"/>
+                    </span>
                 </button>
                 <button @click="getPageRel(1)" :disabled="history.page==history.pageMax">
                     newer
